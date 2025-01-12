@@ -1,25 +1,30 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const morgan = require('morgan');
+const cors = require('cors');
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 
+//  CORS
+app.use(cors());
+
 // Import routes
 const userRoutes = require('./routes/userRoutes');
 const taskRoutes = require('./routes/taskRoutes');
+
+//morgan
+app.use(morgan('combined'));
 
 // Middleware
 app.use('/api/users', userRoutes);
 app.use('/api/tasks', taskRoutes);
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB Connected...'))
   .catch(err => console.log(err));
 

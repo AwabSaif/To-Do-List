@@ -57,6 +57,22 @@ const updateTask = async (req, res) => {
   }
 };
 
+// Update a task
+const completedTask = async (req, res) => {
+  try {
+    const task = await Task.findById(req.params.id);
+    if (!task || task.userId.toString() !== req.user.id) {
+      return res.status(404).json({ message: 'Task not found' });
+    }
+    const { completed } = req.body;
+    task.completed = completed !== undefined ? completed : task.completed;
+    const updatedTask = await task.save();
+    res.status(200).json({message:"The status of the task has changed"});
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Delete a task
 const deleteTask = async (req, res) => {
   try {
@@ -71,4 +87,4 @@ const deleteTask = async (req, res) => {
   }
 };
 
-module.exports = { addTask, getTasks, getTask, updateTask, deleteTask };
+module.exports = { addTask, getTasks, getTask, updateTask,completedTask, deleteTask };
