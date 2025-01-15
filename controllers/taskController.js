@@ -73,6 +73,27 @@ const completedTask = async (req, res) => {
   }
 };
 
+/* 
+const completedTask = async (req, res) => {
+  try {
+    const task = await Task.findById(req.params.id);
+
+    if (!task || task.userId.toString() !== req.user.id) {
+      return res.status(404).json({ message: 'Task not found or unauthorized' });
+    }
+    const { completed } = req.body;
+    if (typeof completed !== 'boolean') {
+      return res.status(400).json({ message: 'Invalid value for completed. It must be true or false.' });
+    }
+    task.completed = completed;
+    const updatedTask = await task.save();
+    res.status(200).json({ message: 'The status of the task has been updated', task: updatedTask });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+ */
+
 // Delete a task
 const deleteTask = async (req, res) => {
   try {
